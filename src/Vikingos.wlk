@@ -1,15 +1,3 @@
-class GrupoVikingos {
-	var integrantes
-	
-	constructor(vikingos) {
-		integrantes=vikingos
-	}
-	
-	method expedicionValeLaPena(expedicion) {
-		return expedicion.valeLaPena(integrantes)
-	}
-}
-
 class Vikingo  {
 	var casta
 	var rol
@@ -20,7 +8,7 @@ class Vikingo  {
 		rol=clase
 	}
 	
-	method requisitoParaExpedicion(expedicion) {
+	method requisitoParaExpedicion() {
 		if(!casta.puedeIrAUnaExpedicion()) {
 			throw new Exception("No puede incorporarse a la expedicion porque es un soldado Jarl y no posee armas")
 		}
@@ -112,13 +100,24 @@ class Soldado {
 }
 
 class Expedicion {
-	var destinos 
+	var destinos
+	var integrantes = #{}
 	
 	constructor(lugaresDestino) {
 		destinos=lugaresDestino
 	}
 	
-	method valeLaPena(integrantes) {
+	method subirVikingoALaExpedicion(vikingo) {
+		if(vikingo.requisitoParaExpedicion()) {
+			integrantes.add(vikingo)
+		}
+	}
+	
+	method salirDeExpedicion() {
+		
+	}
+	
+	method valeLaPena() {
 		return destinos.forAll({destino => destino.valeLaPena(integrantes)})
 	}
 }
