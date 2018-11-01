@@ -132,9 +132,7 @@ class Capital {
 	}
 	
 	method valeLaPena(integrantes) {
-		var defensoresRestantes = defensores
-		defensores -= (integrantes.take(defensoresRestantes)).size()
-		return (integrantes.take(defensoresRestantes)).size()*factorDeRiqueza
+		return (integrantes.take(defensores)).size()*factorDeRiqueza
 	}
 }
 
