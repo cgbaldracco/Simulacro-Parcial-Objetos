@@ -8,6 +8,10 @@ class Vikingo  {
 		rol=clase
 	}
 	
+	method sumarMonedas(monedas) {
+		oro += monedas
+	}
+	
 	method requisitoParaExpedicion() {
 		if(!casta.puedeIrAUnaExpedicion()) {
 			throw new Exception("No puede incorporarse a la expedicion porque es un soldado Jarl y no posee armas")
@@ -36,7 +40,7 @@ class Jarl {
 	
 	method ascender(rol) {
 		rol.ascender()
-		return new Karl(armas+=10)
+		return new Karl(armas+=10) //cambiar para que el return quede en otro metodo
 	}
 }
 
@@ -65,13 +69,8 @@ class Tharl {
 }
 
 class Granjero {
-	var hijos
-	var hectareas
-	
-	constructor(cantHijos,cantHectareas){
-		hijos=cantHijos
-		hectareas=cantHectareas
-	}
+	var property hijos
+	var property hectareas
 	
 	method productivo() {
 		return hijos <= hectareas/2
@@ -84,13 +83,8 @@ class Granjero {
 }
 
 class Soldado {
-	var vidasCobradas
-	var almasPoseidas
-	
-	constructor(cantVidas,almas) {
-		vidasCobradas=cantVidas
-		almasPoseidas=almas
-	}
+	var property vidasCobradas
+	var property almasPoseidas
 	
 	method productivo() {
 		return vidasCobradas >= 20 && almasPoseidas!=[]
@@ -114,6 +108,11 @@ class Expedicion {
 	}
 	
 	method salirDeExpedicion() {
+	    destinos.foreach({destino => destino.invacion(integrantes)})
+		self.repartirBotin()
+	}
+	
+	method repartirBotin() {
 		
 	}
 	
@@ -138,6 +137,18 @@ class Capital {
 	method valeLaPena(integrantes) {
 		return self.botin(integrantes) >= integrantes.size()*3
 	}
+	
+	method invacion(integrantes) {
+		var defensoresRestantes = defensores
+		self.repartirBotin(integrantes)
+		defensores-=(integrantes.take(defensoresRestantes)).size()
+        ((integrantes.take(defensoresRestantes)).size()).forEach({integrante => (integrante.rol()).vidasCobradas(1)})
+	}
+	
+	method repartirBotin(integrantes) {
+		var botinEq = self.botin(integrantes) / integrantes.size()
+		integrantes.forEach({integrante => integrante.sumarMonedas(botinEq)})
+	}
 }
 
 class Aldea {
@@ -154,17 +165,23 @@ class Aldea {
 	method sedDeSaqueo(integrantes) {
 		return iglesias.sum({iglesia => iglesia.crucifijos()}) >= 15
 	}
+	
+	method repartirBotin(integrantes) {
+		var botinEq = self.sedDeSaqueo(integrantes) / integrantes.size()
+		integrantes.sumarMonedas({integrante => integrante.sumarMonedas(botinEq)})
+	}
+	
+	method invacion(integrantes) {
+		self.repartirBotin(integrantes)
+		iglesias.forAll({iglesia => iglesia.crucifijos(0)})
+	}
 }
 
 class Iglesia {
 	var crucifijos
 	
-	constructor(cantCrucifijos) {
-		crucifijos=cantCrucifijos
-	}
-	
-	method crucifijos() {
-		return crucifijos
+	method crucifijos(cruci) {
+	    crucifijos = cruci
 	}
 }
 
