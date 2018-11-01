@@ -169,10 +169,10 @@ class Iglesia {
 }
 
 class Amuralladas inherits Aldea {
-	var cantMinVikingos 
+	var cantMinInvasores 
 	
 	constructor(minimo) = super(iglesiasDeLaAldea) {
-		cantMinVikingos=minimo
+		cantMinInvasores=minimo
 	}
 	
 	override method sedDeSaqueo(integrantes) {
@@ -180,6 +180,6 @@ class Amuralladas inherits Aldea {
 	}
 	
 	method cumpleMinimo(integrantes) {
-		return integrantes.size() >= cantMinVikingos
+		return integrantes.size() >= cantMinInvasores
 	}
 }
