@@ -131,8 +131,12 @@ class Capital {
 		defensores=cantDefensores
 	}
 	
-	method valeLaPena(integrantes) {
+	method botin(integrantes) {
 		return (integrantes.take(defensores)).size()*factorDeRiqueza
+	}
+	
+	method valeLaPena(integrantes) {
+		return self.botin(integrantes) >= integrantes.size()*3
 	}
 }
 
