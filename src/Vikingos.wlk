@@ -31,7 +31,7 @@ class Vikingo  {
 	}
 	
 	method ascender() {
-		casta.ascender(rol)
+		casta = casta.ascender(rol)
 	}
 	
 }
@@ -48,8 +48,7 @@ class Jarl {
 	
 	method ascender(rol) {
 		rol.ascender()
-		armas += 10
-		return new Vikingo(new Karl(armas+=10),rol)
+		return new Karl(armas+=10)
 	}
 }
 
@@ -62,7 +61,7 @@ class Karl {
 	method puedeIrAUnaExpedicion() {}
 	
 	method ascender(rol) {
-		return new Vikingo(new Tharl(armas),rol)
+		return new Tharl(armas)
 	}
 }
 
@@ -74,7 +73,7 @@ class Tharl {
 	
 	method puedeIrAUnaExpedicion() {}
 	
-	method ascender(rol) {}
+	method ascender(rol) = self
 }
 
 class Granjero {
